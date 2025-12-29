@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../authContext/UserContext";
 import { getUserProfile, updateMyAvatar, followUser } from "../api/auth";
-import { Trash, Heart, MessageCircle, Calendar, Mail, MapPin, Link as LinkIcon, MoreHorizontal, ChevronLeft } from "lucide-react";
+import { Trash, Heart, MessageCircle, Calendar, Mail, MapPin, Link as LinkIcon, MoreHorizontal, ChevronLeft, LogOut } from "lucide-react";
 import { toast } from "react-toastify";
 import WhatesHappening from "../components/WhatesHappening";
 import AvatarUploader from "../components/AvatarUploader";
@@ -11,10 +11,24 @@ import UserListModal from "../components/UserListModal";
 
 function Profile() {
   const { id } = useParams();
-  const { user, setUser } = useAuth();
+  const { user, setUser, logout } = useAuth();
   const [profile, setProfile] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [followModal, setFollowModal] = useState({ isOpen: false, type: "followers" });
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      toast.error("Logout error");
+      console.error("Logout error:", error);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -87,10 +101,19 @@ function Profile() {
         <Link to="/" className="p-2 hover:bg-gray-100 rounded-full transition-colors text-gray-600">
           <ChevronLeft size={24} />
         </Link>
-        <div>
-          <h2 className="font-black text-gray-900 tracking-tight leading-none">{profile.name}</h2>
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Profile View</span>
+        <div className="flex-1 min-w-0">
+          <h2 className="font-black text-gray-900 tracking-tight leading-none truncate">{profile.name}</h2>
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mt-1">Profile View</span>
         </div>
+        {isOwner && (
+          <button 
+            onClick={handleLogout}
+            className="md:hidden p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-90"
+            title="Logout"
+          >
+            <LogOut size={20} />
+          </button>
+        )}
       </div>
 
       <div className="max-w-2xl mx-auto">

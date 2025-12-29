@@ -3,12 +3,28 @@ import { useState } from "react";
 import { useAuth } from "../authContext/UserContext";
 import WhatesHappening from "../components/WhatesHappening";
 import PostFeeds from "../components/PostFeeds";
-import { Sparkles } from "lucide-react";
+import { Sparkles, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Home() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("foryou");
   const [refreshFeed, setRefreshFeed] = useState(0);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      toast.error("Logout error");
+      console.error("Logout error:", error);
+    }
+  };
 
   const handlePostCreated = () => {
     setRefreshFeed((prev) => prev + 1);
