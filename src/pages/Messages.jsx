@@ -157,7 +157,7 @@ export default function Messages() {
   );
 
   return (
-    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#F8F9FD] overflow-hidden lg:pr-4 lg:py-4 gap-4 md:px-4">
+    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#F8F9FD] overflow-hidden lg:pr-4 lg:py-4 gap-4 md:px-4 w-full max-w-full overflow-x-hidden">
       {/* Sidebar Container */}
       <div className={`w-full md:w-[380px] lg:w-[420px] min-w-0 bg-white md:bg-white/70 md:backdrop-blur-xl md:rounded-3xl md:shadow-2xl flex flex-col border-r md:border-none overflow-hidden transition-all duration-300 ${selectedUser ? 'hidden md:flex' : 'flex'}`}>
         {/* Sidebar Header */}
@@ -233,25 +233,25 @@ export default function Messages() {
         {selectedUser ? (
           <>
             {/* Chat Header */}
-            <div className="px-6 py-4 border-b border-gray-100 bg-white/80 backdrop-blur-md flex items-center justify-between z-10">
-              <div className="flex items-center gap-4">
-                <button className="md:hidden p-2 -ml-2 text-gray-600 active:scale-90 transition-transform" onClick={() => setSelectedUser(null)}>
+            <div className="px-4 md:px-6 py-4 border-b border-gray-100 bg-white/80 backdrop-blur-md flex items-center justify-between z-10">
+              <div className="flex flex-1 items-center gap-3 md:gap-4 min-w-0">
+                <button className="md:hidden p-2 -ml-2 text-gray-600 active:scale-90 transition-transform flex-shrink-0" onClick={() => setSelectedUser(null)}>
                   <ChevronLeft size={24} />
                 </button>
-                <div className="relative">
+                <div className="relative flex-shrink-0">
                   <img
                     src={selectedUser.avatar || "/avatar.png"}
                     alt={selectedUser.name}
-                    className="w-11 h-11 rounded-2xl object-cover shadow-sm"
+                    className="w-10 h-10 md:w-11 md:h-11 rounded-2xl object-cover shadow-sm"
                   />
                   <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full" />
                 </div>
-                <div>
-                  <h3 className="font-black text-gray-900 leading-none">{selectedUser.name}</h3>
-                  <span className="text-[11px] font-bold text-green-500 uppercase tracking-tighter">Online Now</span>
+                <div className="min-w-0 flex-1">
+                  <h3 className="font-black text-gray-900 leading-none truncate">{selectedUser.name}</h3>
+                  <span className="text-[11px] font-bold text-green-500 uppercase tracking-tighter block mt-0.5 truncate">Online Now</span>
                 </div>
               </div>
-              <div className="flex items-center gap-1 md:gap-3">
+              <div className="flex items-center gap-1 md:gap-3 ml-2 flex-shrink-0">
                 <button className="p-2.5 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all">
                   <Phone size={20} />
                 </button>
@@ -266,7 +266,7 @@ export default function Messages() {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-[#FAFBFD] custom-scrollbar">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-[#FAFBFD] custom-scrollbar overflow-x-hidden">
               <div className="flex justify-center my-4">
                 <span className="bg-gray-200/50 text-gray-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Today</span>
               </div>
@@ -289,15 +289,15 @@ export default function Messages() {
                     )}
                     {!isMe && !showAvatar && <div className="w-7" />}
                     
-                    <div className={`flex flex-col ${isMe ? "items-end" : "items-start"} max-w-[75%] md:max-w-[65%]`}>
+                    <div className={`flex flex-col ${isMe ? "items-end" : "items-start"} max-w-[75%] md:max-w-[65%] min-w-0 flex-shrink`}>
                       <div
-                        className={`px-5 py-3 shadow-sm ${
+                        className={`px-4 py-3 shadow-sm break-all overflow-hidden ${
                           isMe
                             ? "bg-gradient-to-tr from-primary to-blue-400 text-white rounded-2xl rounded-br-none"
                             : "bg-white text-gray-800 rounded-2xl rounded-bl-none border border-gray-100"
                         }`}
                       >
-                        <p className="text-sm leading-relaxed">{msg.text}</p>
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap break-all">{msg.text}</p>
                       </div>
                       <span className="text-[9px] font-bold text-gray-400 mt-1.5 mx-1 uppercase">
                         {new Date(msg.createdAt).toLocaleTimeString([], {
@@ -313,7 +313,7 @@ export default function Messages() {
             </div>
 
             {/* Message Input Area */}
-            <div className="p-6 bg-white border-t border-gray-100">
+            <div className="p-4 md:p-6 bg-white border-t border-gray-100">
               <form
                 onSubmit={handleSendMessage}
                 className="flex items-center gap-3 bg-gray-50 p-2 rounded-2xl border border-gray-100 focus-within:border-primary/30 focus-within:ring-4 focus-within:ring-primary/5 transition-all"
