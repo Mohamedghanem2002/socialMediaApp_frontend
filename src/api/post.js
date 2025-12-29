@@ -1,4 +1,4 @@
-const POSTS = "https://social-media-app-backend-mu.vercel.app/posts";
+const POSTS = (import.meta.env.VITE_API_URL?.replace("/users", "/posts")) || "https://social-media-app-backend-mu.vercel.app/posts";
 
 export async function getPostsByUser(userId) {
   const res = await fetch(`${POSTS}/by-user/${userId}`, {

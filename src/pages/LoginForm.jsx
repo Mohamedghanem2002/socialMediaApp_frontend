@@ -39,7 +39,7 @@ function LoginForm() {
         {/* Card */}
         <div className="border border-gray-200 rounded-2xl p-6 shadow-sm">
           <h1 className="text-2xl font-bold mb-6 text-gray-900">
-            Create your account
+            Login to your account
           </h1>
 
           <form action={formAction} className="space-y-5">
@@ -73,7 +73,7 @@ function LoginForm() {
               className="w-full bg-[#1D9BF0] text-white font-semibold py-3 rounded-full
             hover:bg-blue-600 transition"
             >
-              {isPending ? "Creating account..." : "Login"}
+              {isPending ? "Logging in..." : "Login"}
             </button>
 
             {/*   Don’t have an account?*/}

@@ -1,4 +1,4 @@
-const API = "https://social-media-app-backend-mu.vercel.app/users";
+const API = import.meta.env.VITE_API_URL || "https://social-media-app-backend-mu.vercel.app/users";
 
 // const token = localStorage.getItem("token");
 export async function registerApi(payload) {
@@ -24,7 +24,7 @@ export async function loginApi(payload) {
   });
 
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || "Register failed");
+  if (!res.ok) throw new Error(data.error || "Login failed");
   return data;
 }
 
@@ -61,7 +61,7 @@ export async function getUserProfile(id) {
 
 // Update user profile
 export async function updateMyAvatar(userId, avatarUrl) {
-  const res = await fetch(`https://social-media-app-backend-mu.vercel.app/users/${userId}/avatar`, {
+  const res = await fetch(`${API}/${userId}/avatar`, {
     method: "PUT",
     credentials: "include",
     headers: {

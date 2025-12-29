@@ -1,4 +1,4 @@
-const COMMENTS = "https://social-media-app-backend-mu.vercel.app/comments";
+const COMMENTS = (import.meta.env.VITE_API_URL?.replace("/users", "/comments")) || "https://social-media-app-backend-mu.vercel.app/comments";
 
 // Get all comments for a post
 export async function getCommentsByPost(postId) {
