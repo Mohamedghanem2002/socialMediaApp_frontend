@@ -3,6 +3,8 @@ import { useAuth } from "../authContext/UserContext";
 import Pusher from "pusher-js";
 
 const SocketContext = createContext(null);
+import API_URL, { getHeaders } from "../config";
+const BASE_URL = `${API_URL}/users`;
 
 export const useSocket = () => useContext(SocketContext);
 
@@ -69,9 +71,11 @@ export const SocketProvider = ({ children }) => {
 
   const fetchUnreadCount = async () => {
     try {
+      const NOTIFICATIONS_URL = BASE_URL.replace("/users", "/notifications");
       const res = await fetch(
-        "https://social-media-app-backend-mu.vercel.app/notifications/unread-count",
+        `${NOTIFICATIONS_URL}/unread-count`,
         {
+          headers: getHeaders(),
           credentials: "include",
         }
       );
@@ -84,9 +88,11 @@ export const SocketProvider = ({ children }) => {
 
   const fetchUnreadMessageCount = async () => {
     try {
+      const MESSAGES_URL = BASE_URL.replace("/users", "/messages");
       const res = await fetch(
-        "https://social-media-app-backend-mu.vercel.app/messages/unread-count",
+        `${MESSAGES_URL}/unread-count`,
         {
+          headers: getHeaders(),
           credentials: "include",
         }
       );

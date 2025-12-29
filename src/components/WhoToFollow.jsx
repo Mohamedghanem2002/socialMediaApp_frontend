@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { followUser } from "../api/auth";
 import { toast } from "react-toastify";
 import { useAuth } from "../authContext/UserContext";
+import API_URL, { getHeaders } from "../config";
 
 function WhoToFollow() {
   const { user: currentUser, setUser } = useAuth();
@@ -15,7 +16,8 @@ function WhoToFollow() {
 
   const fetchSuggestions = async () => {
     try {
-      const res = await fetch("https://social-media-app-backend-mu.vercel.app/users/suggestions/users", {
+      const res = await fetch(`${API_URL}/users/suggestions/users`, {
+        headers: getHeaders(),
         credentials: "include",
       });
       const data = await res.json();

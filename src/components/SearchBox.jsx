@@ -1,8 +1,8 @@
 import { Search } from "lucide-react";
 import React from "react";
-
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import API_URL, { getHeaders } from "../config";
 
 function SearchBox() {
   const [query, setQuery] = useState("");
@@ -17,7 +17,8 @@ function SearchBox() {
       if (query.trim().length > 1) {
         setLoading(true);
         try {
-          const res = await fetch(`https://social-media-app-backend-mu.vercel.app/users/search/users?q=${query}`, {
+          const res = await fetch(`${API_URL}/users/search/users?q=${query}`, {
+            headers: getHeaders(),
             credentials: "include",
           });
           const data = await res.json();

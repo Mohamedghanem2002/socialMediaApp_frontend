@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { X, Image as ImageIcon, Smile, MapPin, Globe, Sparkles, Send } from "lucide-react";
 import { toast } from "react-toastify";
+import API_URL, { getHeaders } from "../config";
 
 function CreatePostModal({ isOpen, onClose, user, onPostCreated }) {
   const [text, setText] = useState("");
@@ -13,9 +14,9 @@ function CreatePostModal({ isOpen, onClose, user, onPostCreated }) {
     if (!text && !image) return;
     setLoading(true);
     try {
-      const res = await fetch("https://social-media-app-backend-mu.vercel.app/posts", {
+      const res = await fetch(`${API_URL}/posts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getHeaders(),
         body: JSON.stringify({ text, image }),
         credentials: "include",
       });

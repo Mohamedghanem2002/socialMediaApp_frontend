@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, Sparkles, AlertCircle } from "lucide-react";
 import PostFeeds from "../components/PostFeeds";
+import API_URL, { getHeaders } from "../config";
 
 function PostDetails() {
   const { id } = useParams();
@@ -14,7 +15,8 @@ function PostDetails() {
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`https://social-media-app-backend-mu.vercel.app/posts/${id}`, {
+        const res = await fetch(`${API_URL}/posts/${id}`, {
+          headers: getHeaders(),
           credentials: "include",
         });
         if (!res.ok) throw new Error("Post not found");

@@ -5,6 +5,8 @@ import { followUser } from "../api/auth";
 import { toast } from "react-toastify";
 import { useAuth } from "../authContext/UserContext";
 
+import API_URL, { getHeaders } from "../config";
+
 function Explore() {
   const { user: currentUser, setUser } = useAuth();
   const [query, setQuery] = useState("");
@@ -18,7 +20,8 @@ function Explore() {
 
   const fetchSuggestions = async () => {
     try {
-      const res = await fetch("https://social-media-app-backend-mu.vercel.app/users/suggestions/users", {
+      const res = await fetch(`${API_URL}/users/suggestions/users`, {
+        headers: getHeaders(),
         credentials: "include",
       });
       const data = await res.json();
@@ -36,7 +39,8 @@ function Explore() {
     }
     setLoading(true);
     try {
-      const res = await fetch(`https://social-media-app-backend-mu.vercel.app/users/search/users?q=${val}`, {
+      const res = await fetch(`${API_URL}/users/search/users?q=${val}`, {
+        headers: getHeaders(),
         credentials: "include",
       });
       const data = await res.json();

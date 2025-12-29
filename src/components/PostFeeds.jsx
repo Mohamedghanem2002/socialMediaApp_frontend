@@ -14,6 +14,7 @@ import { useAuth } from "../authContext/UserContext";
 import CommentsSection from "./CommentsSection";
 import { getCommentCount } from "../api/comments";
 import ImageLightbox from "./ImageLightbox";
+import API_URL, { getHeaders } from "../config";
 
 function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
   const { user } = useAuth();
@@ -57,9 +58,9 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
       });
 
       try {
-        const res = await fetch(`https://social-media-app-backend-mu.vercel.app/posts/like/${postId}`, {
+        const res = await fetch(`${API_URL}/posts/like/${postId}`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: getHeaders(),
           credentials: "include",
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -87,18 +88,18 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
       setLoading(true);
       setErr("");
       let url = userId 
-        ? `https://social-media-app-backend-mu.vercel.app/posts/by-user/${userId}`
-        : "https://social-media-app-backend-mu.vercel.app/posts";
+        ? `${API_URL}/posts/by-user/${userId}`
+        : `${API_URL}/posts`;
       
       if (postId) {
-        url = `https://social-media-app-backend-mu.vercel.app/posts/${postId}`;
+        url = `${API_URL}/posts/${postId}`;
       } else if (!userId && activeTab === "following") {
         url += "?filter=following";
       }
         
       const res = await fetch(url, {
         method: "GET",
-        headers: { "Content-Type": "application/json" },
+        headers: getHeaders(),
         credentials: "include",
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -141,8 +142,9 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
   const handleDelete = async (postId) => {
     if (!window.confirm("Are you sure you want to delete this post?")) return;
     try {
-      const res = await fetch(`https://social-media-app-backend-mu.vercel.app/posts/${postId}`, {
+      const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "DELETE",
+        headers: getHeaders(),
         credentials: "include",
       });
       if (res.ok) {
@@ -157,9 +159,9 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
   const handleUpdate = async (postId) => {
     if (!editText.trim()) return;
     try {
-      const res = await fetch(`https://social-media-app-backend-mu.vercel.app/posts/${postId}`, {
+      const res = await fetch(`${API_URL}/posts/${postId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: getHeaders(),
         body: JSON.stringify({ text: editText }),
         credentials: "include",
       });

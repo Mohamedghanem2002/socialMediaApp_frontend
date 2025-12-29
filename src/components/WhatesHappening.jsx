@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Film, BarChart3, Smile, MapPin, Calendar, Send, Image as ImageIcon, Sparkles } from "lucide-react";
 import ImageUploader from "../components/ImageUploader";
 import { toast } from "react-toastify";
+import API_URL, { getHeaders } from "../config";
 
 function WhatesHappening({ user, onPostCreated }) {
   const [uploadImage, setUploadImage] = useState(null);
@@ -18,9 +19,9 @@ function WhatesHappening({ user, onPostCreated }) {
     };
 
     try {
-      const res = await fetch("https://social-media-app-backend-mu.vercel.app/posts", {
+      const res = await fetch(`${API_URL}/posts`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: getHeaders(),
         body: JSON.stringify(newPost),
         credentials: "include",
       });

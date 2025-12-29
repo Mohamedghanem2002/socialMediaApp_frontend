@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
+import API_URL, { getHeaders } from "../config";
+
 export default function Messages() {
   const { user } = useAuth();
   const { socket, userChannel, unreadMessageCount, setUnreadMessageCount } = useSocket();
@@ -72,7 +74,8 @@ export default function Messages() {
 
   const fetchConversations = async () => {
     try {
-      const res = await fetch("https://social-media-app-backend-mu.vercel.app/messages/conversations", {
+      const res = await fetch(`${API_URL}/messages/conversations`, {
+        headers: getHeaders(),
         credentials: "include",
       });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -96,7 +99,8 @@ export default function Messages() {
 
   const fetchMessages = async (userId) => {
     try {
-      const res = await fetch(`https://social-media-app-backend-mu.vercel.app/messages/${userId}`, {
+      const res = await fetch(`${API_URL}/messages/${userId}`, {
+        headers: getHeaders(),
         credentials: "include",
       });
       const data = await res.json();
@@ -111,8 +115,9 @@ export default function Messages() {
       const conv = conversations.find((c) => c._id === userId);
       if (!conv || conv.unreadCount === 0) return;
 
-      const res = await fetch(`https://social-media-app-backend-mu.vercel.app/messages/read/${userId}`, {
+      const res = await fetch(`${API_URL}/messages/read/${userId}`, {
         method: "PUT",
+        headers: getHeaders(),
         credentials: "include",
       });
       if (res.ok) {
@@ -132,10 +137,10 @@ export default function Messages() {
 
     try {
       const res = await fetch(
-        `https://social-media-app-backend-mu.vercel.app/messages/send/${selectedUser._id}`,
+        `${API_URL}/messages/send/${selectedUser._id}`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: getHeaders(),
           body: JSON.stringify({ text }),
           credentials: "include",
         }

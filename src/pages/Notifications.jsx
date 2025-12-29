@@ -4,6 +4,7 @@ import { Bell, Heart, MessageCircle, Reply, Sparkles, CheckCheck, UserPlus } fro
 import { followUser } from "../api/auth";
 import { useAuth } from "../authContext/UserContext";
 import { toast } from "react-toastify";
+import API_URL, { getHeaders } from "../config";
 
 function timeSince(date) {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -37,7 +38,8 @@ function Notifications({ onRead }) {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch("https://social-media-app-backend-mu.vercel.app/notifications", {
+      const res = await fetch(`${API_URL}/notifications`, {
+        headers: getHeaders(),
         credentials: "include",
       });
       const data = await res.json();
@@ -49,8 +51,9 @@ function Notifications({ onRead }) {
 
   const markAllAsRead = async () => {
     try {
-      await fetch("https://social-media-app-backend-mu.vercel.app/notifications/read-all", {
+      await fetch(`${API_URL}/notifications/read-all`, {
         method: "POST",
+        headers: getHeaders(),
         credentials: "include",
       });
 
