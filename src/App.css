@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 14px; /* Smaller base for mobile */
+  }
+  
+  @media (min-width: 768px) {
+    html {
+      font-size: 16px;
+    }
+  }
+  
+  body {
+    @apply text-gray-900 bg-[#F8F9FD] antialiased;
+  }
+}
+
+@layer utilities {
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .text-responsive-h1 {
+    @apply text-lg md:text-2xl font-black;
+  }
+  
+  .text-responsive-p {
+    @apply text-xs md:text-[15px] leading-relaxed;
+  }
+
+  /* Premium Toast Styles */
+  .premium-toast {
+    @apply !rounded-[24px] !bg-white/80 !backdrop-blur-xl !border !border-white/50 !shadow-2xl !p-4 !min-h-0 !mb-4 !mx-4 md:!mx-0;
+  }
+
+  .premium-toast-body {
+    @apply !m-0 !p-0 !text-gray-900 !font-black !text-sm !tracking-tight !flex !items-center !gap-3;
+  }
+
+  .Toastify__toast--success {
+    @apply !border-l-4 !border-l-primary;
+  }
+
+  .Toastify__toast--error {
+    @apply !border-l-4 !border-l-red-500;
+  }
+
+  .Toastify__close-button {
+    @apply !text-gray-400 !opacity-100 !hover:text-gray-900 !transition-colors !mt-1;
+  }
+}
