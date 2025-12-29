@@ -26,34 +26,22 @@ export default function BottomNav({ onPostClick }) {
   const menu = [
     { icon: <Home />, label: "Home", path: "/" },
     { icon: <Search />, label: "Explore", path: "/explore" },
-    { icon: <Plus className="w-8 h-8" />, label: "Post", action: onPostClick, primary: true },
+    { icon: <Plus />, label: "Post", action: onPostClick },
     {
       icon: (
-        <div className="relative flex items-center justify-center">
-          <Mail />
-          {unreadMessageCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-semibold min-w-[16px] h-[16px] px-0.5 rounded-full flex items-center justify-center leading-none shadow-md">
-              {unreadMessageCount > 9 ? "9+" : unreadMessageCount}
-            </span>
-          )}
-        </div>
+        <Mail />
       ),
       label: "Messages",
       path: "/messages",
+      count: unreadMessageCount,
     },
     {
       icon: (
-        <div className="relative flex items-center justify-center">
-          <Bell />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-semibold min-w-[16px] h-[16px] px-0.5 rounded-full flex items-center justify-center leading-none shadow-md">
-              {unreadCount > 9 ? "9+" : unreadCount}
-            </span>
-          )}
-        </div>
+        <Bell />
       ),
       label: "Notifications",
       path: "/notifications",
+      count: unreadCount,
     },
     { icon: <User />, label: "Profile", path: `/profile/${user?._id}` },
   ];
@@ -61,26 +49,42 @@ export default function BottomNav({ onPostClick }) {
   return (
     <div className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 md:hidden z-50 flex justify-around items-center h-16 pb-safe">
       {menu.map((item, index) => {
-        const isActive = location.pathname === item.path;
+        const isActive = item.path && location.pathname === item.path;
+        
         return item.path ? (
           <Link
             key={index}
             to={item.path}
-            className={`flex flex-col items-center justify-center w-full h-full ${
-              isActive ? "text-primary" : "text-gray-500"
-            }`}
+            className="flex-1 flex justify-center items-center h-full group"
           >
-            {item.icon}
+            <div className={`relative flex flex-col items-center justify-center p-2.5 rounded-full transition-all duration-300 ${
+              isActive ? "bg-gray-100 scale-105" : "hover:bg-gray-50 active:bg-gray-100"
+            }`}>
+              {React.cloneElement(item.icon, {
+                size: 24,
+                strokeWidth: isActive ? 2.5 : 2,
+                className: "text-gray-700 transition-all duration-300"
+              })}
+              {item.count > 0 && (
+                <span className="absolute top-1 -right-1 bg-red-500 text-white text-[10px] font-bold min-w-[16px] h-[16px] px-0.5 rounded-full flex items-center justify-center leading-none shadow-sm border border-white">
+                  {item.count > 9 ? "9+" : item.count}
+                </span>
+              )}
+            </div>
           </Link>
         ) : (
           <button
             key={index}
             onClick={item.action}
-            className={`flex flex-col items-center justify-center w-full h-full ${
-                item.primary ? "text-primary bg-primary/10 rounded-2xl h-12 w-12 scale-110 shadow-lg" : "text-gray-500"
-            }`}
+            className="flex-1 flex justify-center items-center h-full group"
           >
-            {item.icon}
+            <div className="relative flex flex-col items-center justify-center p-2.5 rounded-full transition-all duration-300 hover:bg-gray-50 active:bg-gray-100">
+              {React.cloneElement(item.icon, {
+                size: 24,
+                strokeWidth: 2,
+                className: "text-gray-700 transition-colors duration-300"
+              })}
+            </div>
           </button>
         );
       })}

@@ -50,9 +50,11 @@ export default function Messages() {
       };
 
       userChannel.bind("newMessage", handleNewMessage);
+      userChannel.bind("message:new", handleNewMessage);
 
       return () => {
         userChannel.unbind("newMessage", handleNewMessage);
+        userChannel.unbind("message:new", handleNewMessage);
       };
     }
   }, [userChannel, selectedUser]);

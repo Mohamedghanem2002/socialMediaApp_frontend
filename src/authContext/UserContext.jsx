@@ -22,13 +22,23 @@ export function AuthProvider({ children }) {
     })();
   }, []);
 
+  const refreshUser = async () => {
+    try {
+      const data = await getMeApi();
+      setUser(data);
+      return data;
+    } catch (error) {
+      setUser(null);
+    }
+  };
+
   const logout = async () => {
     await logoutApi();
     setUser(null);
   };
 
   return (
-    <AuthCtx.Provider value={{ user, setUser, loading, logout }}>
+    <AuthCtx.Provider value={{ user, setUser, loading, logout, refreshUser }}>
       {children}
     </AuthCtx.Provider>
   );

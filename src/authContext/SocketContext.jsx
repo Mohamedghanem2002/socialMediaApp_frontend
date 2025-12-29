@@ -47,19 +47,24 @@ export const SocketProvider = ({ children }) => {
     });
 
     // listen for new messages
-    channel.bind("newMessage", (message) => {
-       setUnreadMessageCount((prev) => prev + 1);
-    });
+    const handleNewMessageCount = () => {
+      setUnreadMessageCount((prev) => prev + 1);
+    };
+
+    channel.bind("newMessage", handleNewMessageCount);
+    channel.bind("message:new", handleNewMessageCount);
 
     fetchUnreadCount();
     fetchUnreadMessageCount();
 
-    return () => {
-      if (pusherClient) {
-        channel.unbind_all();
-        pusherClient.unsubscribe(channelName);
-      }
-    };
+      return () => {
+        if (pusherClient) {
+          channel.unbind("notification:new");
+          channel.unbind("newMessage", handleNewMessageCount);
+          channel.unbind("message:new", handleNewMessageCount);
+          pusherClient.unsubscribe(channelName);
+        }
+      };
   }, [user]);
 
   const fetchUnreadCount = async () => {

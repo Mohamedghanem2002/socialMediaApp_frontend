@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 function LoginForm() {
-  const { setUser } = useAuth();
+  const { refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const [state, formAction, isPending] = useActionState(
@@ -14,7 +14,7 @@ function LoginForm() {
         const payload = Object.fromEntries(formData.entries());
         const data = await loginApi(payload);
 
-        setUser(data.user);
+        await refreshUser();
 
         setTimeout(() => {
           navigate("/");
