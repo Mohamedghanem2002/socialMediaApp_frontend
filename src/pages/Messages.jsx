@@ -157,9 +157,9 @@ export default function Messages() {
   );
 
   return (
-    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#F8F9FD] overflow-hidden lg:pr-4 lg:py-4">
+    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#F8F9FD] overflow-hidden lg:pr-4 lg:py-4 gap-4 md:px-4">
       {/* Sidebar Container */}
-      <div className={`w-full md:w-[380px] lg:w-[420px] bg-white md:bg-white/70 md:backdrop-blur-xl md:rounded-3xl md:shadow-2xl md:ml-4 flex flex-col border-r md:border-none overflow-hidden transition-all duration-300 ${selectedUser ? 'hidden md:flex' : 'flex'}`}>
+      <div className={`w-full md:w-[380px] lg:w-[420px] min-w-0 bg-white md:bg-white/70 md:backdrop-blur-xl md:rounded-3xl md:shadow-2xl flex flex-col border-r md:border-none overflow-hidden transition-all duration-300 ${selectedUser ? 'hidden md:flex' : 'flex'}`}>
         {/* Sidebar Header */}
         <div className="p-6 pb-4">
           <div className="flex items-center justify-between mb-6">
@@ -229,7 +229,7 @@ export default function Messages() {
       </div>
 
       {/* Chat Window */}
-      <div className={`flex-1 flex flex-col md:mx-4 bg-white md:rounded-3xl md:shadow-2xl overflow-hidden relative ${!selectedUser ? 'hidden md:flex' : 'flex'}`}>
+      <div className={`flex-1 min-w-0 flex flex-col bg-white md:rounded-3xl md:shadow-2xl overflow-hidden relative ${!selectedUser ? 'hidden md:flex' : 'flex'}`}>
         {selectedUser ? (
           <>
             {/* Chat Header */}
