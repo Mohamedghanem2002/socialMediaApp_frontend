@@ -19,10 +19,13 @@ function Layout({ children }) {
   if (hidePaths) {
     return <>{children}</>;
   }
+
+  const isMessages = pathname === "/messages";
+
   return (
-    <div className=" flex max-w-7xl mx-auto ">
+    <div className={`flex max-w-7xl mx-auto ${isMessages ? "h-dvh overflow-hidden" : ""}`}>
       <LeftSideBar onPostClick={() => setPostModalOpen(true)} />
-      <main className="flex-1 border-x border-gray-200 min-h-screen pb-16 md:pb-0">
+      <main className={`flex-1 ${!isMessages ? "border-x border-gray-200" : ""} min-h-screen pb-16 md:pb-0`}>
         {children}
       </main>
       <RightSideBar />

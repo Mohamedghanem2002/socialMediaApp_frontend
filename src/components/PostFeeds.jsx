@@ -260,7 +260,7 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
           {/* Post Header */}
           <div className="p-4 md:p-6 pb-2 md:pb-4 flex items-start justify-between">
             <div className="flex gap-3 md:gap-4">
-              <Link to={`/profile/${post.user?._id}`} className="relative shrink-0">
+              <Link to={`/user/${post.user?._id}`} className="relative shrink-0">
                 <img
                   src={post.user?.avatar || "/avatar.png"}
                   className="h-10 w-10 md:h-14 md:w-14 rounded-xl md:rounded-2xl object-cover shadow-md group-hover:scale-105 transition-transform duration-300"

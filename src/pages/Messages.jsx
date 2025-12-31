@@ -162,7 +162,8 @@ export default function Messages() {
   );
 
   return (
-    <div className="h-[calc(100vh-64px)] md:h-screen flex bg-[#F8F9FD] overflow-hidden lg:pr-4 lg:py-4 gap-4 md:px-4 w-full max-w-full overflow-x-hidden">
+    <div className="h-[calc(100dvh-64px)] md:h-[100dvh] flex bg-[#F8F9FD] overflow-hidden md:p-4 md:gap-4 w-full max-w-full overflow-x-hidden pb-safe">
+      <div className="flex flex-1 w-full h-full min-w-0 overflow-hidden md:gap-4">
       {/* Sidebar Container */}
       <div className={`w-full md:w-[380px] lg:w-[420px] min-w-0 bg-white md:bg-white/70 md:backdrop-blur-xl md:rounded-3xl md:shadow-2xl flex flex-col border-r md:border-none overflow-hidden transition-all duration-300 ${selectedUser ? 'hidden md:flex' : 'flex'}`}>
         {/* Sidebar Header */}
@@ -392,6 +393,7 @@ export default function Messages() {
           to { opacity: 1; transform: translateY(0); }
         }
       `}} />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSocket } from "../authContext/SocketContext";
+import { Link } from "react-router-dom";
 import { Bell, Heart, MessageCircle, Reply, Sparkles, CheckCheck, UserPlus } from "lucide-react";
 import { followUser } from "../api/auth";
 import { useAuth } from "../authContext/UserContext";
@@ -135,24 +136,28 @@ function Notifications({ onRead }) {
                 `}
               >
                 {/* Avatar with Icon Badge */}
-                <div className="relative shrink-0">
-                  <img
-                    src={notification?.sender?.avatar || "/avatar.png"}
-                    alt="avatar"
-                    className="w-12 h-12 rounded-2xl object-cover shadow-sm bg-gray-100"
-                  />
-                  <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-md border border-gray-50">
-                    {getNotificationIcon(notification.type)}
+                <Link to={`/user/${notification?.sender?._id}`}>
+                  <div className="relative shrink-0">
+                    <img
+                      src={notification?.sender?.avatar || "/avatar.png"}
+                      alt="avatar"
+                      className="w-12 h-12 rounded-2xl object-cover shadow-sm bg-gray-100"
+                    />
+                    <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-md border border-gray-50">
+                      {getNotificationIcon(notification.type)}
+                    </div>
                   </div>
-                </div>
+                </Link>
 
                 {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <p className="text-[14px] text-gray-800 leading-snug">
-                      <span className="font-black text-gray-900">
-                        {notification?.sender?.name}
-                      </span>{" "}
+                      <Link to={`/user/${notification?.sender?._id}`} className="hover:text-primary transition-colors">
+                        <span className="font-black text-gray-900">
+                          {notification?.sender?.name}
+                        </span>
+                      </Link>{" "}
                       <span className="font-medium text-gray-500">
                         {getNotificationText(notification)}
                       </span>

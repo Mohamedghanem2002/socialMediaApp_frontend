@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { addComment, addReply, getCommentsByPost, updateCommentApi, deleteCommentApi } from "../api/comments";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Send, ChevronDown, ChevronRight, MoreVertical, Edit2, Trash2, X, Check } from "lucide-react";
 import { useAuth } from "../authContext/UserContext";
@@ -53,17 +54,21 @@ const Comment = ({ comment, allComments, onReply, onEdit, onDelete, level = 0 })
   return (
     <div className={`mt-2 ${level > 0 ? "ml-6 border-l-2 border-gray-100 pl-4" : ""}`}>
       <div className="flex gap-2 group/main">
-        <img
-          className="h-8 w-8 rounded-full object-cover"
-          src={comment.user?.avatar || "/avatar.png"}
-          alt={comment.user?.name}
-        />
+        <Link to={`/user/${comment.user?._id}`}>
+          <img
+            className="h-8 w-8 rounded-full object-cover hover:scale-105 transition-transform"
+            src={comment.user?.avatar || "/avatar.png"}
+            alt={comment.user?.name}
+          />
+        </Link>
         <div className="flex-1 min-w-0">
           <div className="bg-gray-50 p-3 rounded-2xl group-hover/main:bg-gray-100 transition-colors relative">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-sm font-black text-gray-900 truncate">
-                {comment.user?.name}
-              </span>
+              <Link to={`/user/${comment.user?._id}`} className="hover:text-primary transition-colors truncate">
+                <span className="text-sm font-black text-gray-900 truncate">
+                  {comment.user?.name}
+                </span>
+              </Link>
               <div className="flex items-center gap-2 shrink-0">
                 <span className="text-gray-400 font-bold text-[9px] uppercase tracking-tighter">
                     {timeSince(comment.createdAt)}
