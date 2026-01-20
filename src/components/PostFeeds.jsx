@@ -83,6 +83,9 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
     });
   };
 
+  const [visiblePosts, setVisiblePosts] = useState(5);
+  const [loadingComments, setLoadingComments] = useState(false);
+
   const loadPosts = useCallback(async () => {
     try {
       setLoading(true);
@@ -104,25 +107,54 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setPosts(Array.isArray(data) ? data : [data]);
+      const loadedPosts = Array.isArray(data) ? data : [data];
+      setPosts(loadedPosts);
+      
+      // Fetch comment counts in background
+      setLoadingComments(true);
+      loadedPosts.forEach(async (post) => {
+        try {
+          const count = await getCommentCount(post._id);
+          setCommentCounts(prev => ({ ...prev, [post._id]: count }));
+        } catch (error) {
+          console.error(`Failed to load comment count for ${post._id}`, error);
+        }
+      });
+      setLoadingComments(false);
 
-      const counts = {};
-      await Promise.all(
-        data.map(async (post) => {
-          try {
-            counts[post._id] = await getCommentCount(post._id);
-          } catch (error) {
-            console.error("Failed to load comment count", error);
-          }
-        })
-      );
-      setCommentCounts(counts);
     } catch (e) {
       setErr("Error while loading posts");
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [userId, postId, activeTab]);
+
+  const handleLoadMore = () => {
+    setVisiblePosts(prev => prev + 5);
+  };
+    
+  const observerTarget = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && optimisticPosts.length > visiblePosts) {
+          handleLoadMore();
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [optimisticPosts.length, visiblePosts]);
 
   useEffect(() => {
     loadPosts();
@@ -252,7 +284,7 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
 
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 max-w-2xl mx-auto">
-      {optimisticPosts.map((post) => (
+      {optimisticPosts.slice(0, visiblePosts).map((post) => (
         <article
           key={post._id}
           className="bg-white rounded-[24px] md:rounded-[32px] shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 group border border-transparent hover:border-primary/10"
@@ -464,6 +496,12 @@ function PostFeeds({ refreshTrigger, userId, activeTab, postId }) {
         imageUrl={selectedImage} 
         onClose={() => setSelectedImage(null)} 
       />
+
+      <div ref={observerTarget} className="h-10 flex items-center justify-center w-full my-4">
+        {optimisticPosts.length > visiblePosts && (
+           <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+        )}
+      </div>
     </div>
   );
 }
