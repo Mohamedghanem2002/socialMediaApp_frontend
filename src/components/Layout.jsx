@@ -23,7 +23,7 @@ function Layout({ children }) {
   const isMessages = pathname === "/messages";
 
   return (
-    <div className={`flex max-w-7xl mx-auto ${isMessages ? "h-dvh overflow-hidden" : ""}`}>
+    <div className={`flex items-start max-w-7xl mx-auto ${isMessages ? "h-dvh overflow-hidden" : ""}`}>
       <LeftSideBar onPostClick={() => setPostModalOpen(true)} />
       <main className={`flex-1 ${!isMessages ? "border-x border-gray-200" : ""} min-h-screen pb-16 md:pb-0`}>
         {children}
